@@ -15,6 +15,11 @@ export const blockPosAtom = atomFamily({
   default: { x: -1, y: -1 },
 })
 
+export const isCreatingShapeAtom = atom({
+  key: 'isCreatingShape',
+  default: false,
+})
+
 export const creationPosAtom = atom({
   key: 'creationPos',
   default: { x: 0, y: 0 },
@@ -23,4 +28,9 @@ export const creationPosAtom = atom({
 export const creationDimsAtom = atom({
   key: 'creationDims',
   default: { width: -1, height: -1 },
+})
+
+export const selectedBlockIdAtom = atom<string>({
+  key: 'selectedBlockIds',
+  default: '',
 })

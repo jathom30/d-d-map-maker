@@ -12,11 +12,13 @@ import {
   blockIdsAtom,
   canDragCanvasAtom,
   canvasDimsSelector,
+  selectedBlockIdAtom,
   selectedToolAtom,
   stageDimsAtom,
 } from 'State'
 import { Block } from '../Block'
 import { CreationLayer } from '../CreationLayer'
+import { CustomTransformer } from '../CustomTransformer'
 import { GridLayer } from '../GridLayer'
 
 export const CreativeStage: React.FC<{
@@ -29,8 +31,12 @@ export const CreativeStage: React.FC<{
   const stageDims = useRecoilValue(stageDimsAtom)
   const blockIds = useRecoilValue(blockIdsAtom)
 
+  const selectedBlock = useRecoilValue(selectedBlockIdAtom)
+
   const tool = useRecoilValue(selectedToolAtom)
   const canDragCanvas = useRecoilValue(canDragCanvasAtom)
+
+  const canDrag = canDragCanvas || tool === 'grab'
 
   return (
     <Stage
@@ -47,7 +53,7 @@ export const CreativeStage: React.FC<{
             width={canvasDims.width}
             x={getCenterPos(stageDims, canvasDims).x}
             y={getCenterPos(stageDims, canvasDims).y}
-            draggable={canDragCanvas}
+            draggable={canDrag}
             dragBoundFunc={(pos) => handleCoverDrag(pos, groupRef.current)}
           >
             <GridLayer />
@@ -55,8 +61,9 @@ export const CreativeStage: React.FC<{
             {blockIds.map((blockId) => (
               <Block key={blockId} id={blockId} />
             ))}
+            {!!selectedBlock && <CustomTransformer id={selectedBlock} />}
             {/* below rect used as grab handle for parent group */}
-            {canDragCanvas && (
+            {canDrag && (
               <Rect height={canvasDims.height} width={canvasDims.width} />
             )}
           </Group>

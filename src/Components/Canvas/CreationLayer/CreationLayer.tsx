@@ -1,4 +1,4 @@
-import { clamp, getCreateOnDragDims, getCreateOnDragPos } from 'Helpers'
+import { getCreateOnDragDims, getCreateOnDragPos } from 'Helpers'
 import { KonvaEventObject } from 'konva/lib/Node'
 import React, { useState } from 'react'
 import { Group, Rect } from 'react-konva'
@@ -11,6 +11,7 @@ import {
   creationDimsAtom,
   creationPosAtom,
   gridSizeAtom,
+  isCreatingShapeAtom,
 } from 'State'
 import { v4 as uuid } from 'uuid'
 
@@ -19,7 +20,8 @@ export const CreationLayer = () => {
   const setBlockIds = useSetRecoilState(blockIdsAtom)
   const gridSize = useRecoilValue(gridSizeAtom)
   const [clickStartPos, setClickStartPos] = useState({ x: 0, y: 0 })
-  const [isCreatingShape, setIsCreatingShape] = useState(false)
+  const [isCreatingShape, setIsCreatingShape] =
+    useRecoilState(isCreatingShapeAtom)
   const setCreationPos = useSetRecoilState(creationPosAtom)
   const setCreationDims = useSetRecoilState(creationDimsAtom)
   const [tempDims, setTempDims] = useRecoilState(blockDimsAtom('create'))
@@ -50,15 +52,13 @@ export const CreationLayer = () => {
     const exactWidth = Math.abs(pos.x - clickStartPos.x)
     const exactHeight = Math.abs(pos.y - clickStartPos.y)
     // below dims set to nearest grid length with min of of one grid length
-    const width = clamp(
+    const width = Math.max(
+      gridSize,
       Math.round(exactWidth / gridSize) * gridSize,
-      gridSize,
-      1000000,
     )
-    const height = clamp(
-      Math.round(exactHeight / gridSize) * gridSize,
+    const height = Math.max(
       gridSize,
-      1000000,
+      Math.round(exactHeight / gridSize) * gridSize,
     )
     const x = Math.round(pos.x / gridSize) * gridSize
     const y = Math.round(pos.y / gridSize) * gridSize

@@ -6,3 +6,6 @@ export const getCenterPos = (parent: DimensionsType, child: DimensionsType) => {
     y: parent.height / 2 - child.height / 2,
   }
 }
+
+export const onGrid = (item: number, grid: number) =>
+  Math.round(item / grid) * grid

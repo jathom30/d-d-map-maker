@@ -10,4 +10,7 @@
   &--is-dragging {
     cursor: grab;
   }
+  &--is-creating {
+    cursor: crosshair;
+  }
 }

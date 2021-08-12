@@ -1,4 +1,8 @@
-import { faSearch, faSquareFull } from '@fortawesome/free-solid-svg-icons'
+import {
+  faArrowsAlt,
+  faSearch,
+  faSquareFull,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useResizeObserver from '@react-hook/resize-observer'
 import { Button, GridBox } from 'component-library'
@@ -61,10 +65,19 @@ function App() {
   }, [])
 
   return (
-    <div className={`App ${canDragCanvas ? 'App--is-dragging' : ''}`}>
+    <div
+      className={`App ${
+        canDragCanvas || tool === 'grab' ? 'App--is-dragging' : ''
+      } ${tool === 'shape' ? 'App--is-creating' : ''}`}
+    >
       <Sidebar
         elements={
           <GridBox gap="0.25rem">
+            <Button
+              kind={tool === 'grab' ? 'default' : 'text'}
+              onClick={() => handleSelectTool('grab')}
+              iconLeft={<FontAwesomeIcon icon={faArrowsAlt} />}
+            />
             <Button
               kind={tool === 'shape' ? 'default' : 'text'}
               onClick={() => handleSelectTool('shape')}
