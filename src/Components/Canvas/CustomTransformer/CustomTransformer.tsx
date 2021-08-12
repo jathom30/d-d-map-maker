@@ -62,6 +62,7 @@ export const CustomTransformer: React.FC<{ id: string }> = ({ id }) => {
         stroke="orange"
         strokeWidth={3}
         onClick={() => setSelected('')}
+        onTap={() => setSelected('')}
       />
       <Rect
         name="bottom-right"
