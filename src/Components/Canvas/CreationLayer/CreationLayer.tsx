@@ -27,7 +27,7 @@ export const CreationLayer = () => {
   const [tempDims, setTempDims] = useRecoilState(blockDimsAtom('create'))
   const [tempPos, setTempPos] = useRecoilState(blockPosAtom('create'))
 
-  const handleMouseDown = (e: KonvaEventObject<MouseEvent>) => {
+  const handleMouseDown = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
     setIsCreatingShape(true)
     const pos = e.currentTarget.getRelativePointerPosition()
     setClickStartPos({
@@ -36,7 +36,7 @@ export const CreationLayer = () => {
     })
   }
 
-  const handleMouseMove = (e: KonvaEventObject<MouseEvent>) => {
+  const handleMouseMove = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
     if (!isCreatingShape) return
     const pos = e.currentTarget.getRelativePointerPosition()
     const x = Math.round(pos.x / gridSize) * gridSize
@@ -45,7 +45,7 @@ export const CreationLayer = () => {
     setTempPos(getCreateOnDragPos(clickStartPos, { x, y }))
   }
 
-  const handleMouseUp = (e: KonvaEventObject<MouseEvent>) => {
+  const handleMouseUp = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
     setIsCreatingShape(false)
     setTempDims({ width: 0, height: 0 })
     const pos = e.currentTarget.getRelativePointerPosition()
@@ -73,8 +73,11 @@ export const CreationLayer = () => {
   return (
     <Group
       onMouseDown={handleMouseDown}
+      onTouchStart={handleMouseDown}
       onMouseMove={handleMouseMove}
+      onTouchMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      onTouchEnd={handleMouseUp}
     >
       <Rect width={canvasDims.width} height={canvasDims.height} />
       {isCreatingShape && (
