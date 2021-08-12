@@ -1,18 +1,14 @@
-import {
-  faMousePointer,
-  faSearch,
-  faShapes,
-} from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faSquareFull } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useResizeObserver from '@react-hook/resize-observer'
 import { Button, GridBox } from 'component-library'
 import { CreativeStage } from 'Components/Canvas/CreativeStage/CreativeStage'
 import { Sidebar } from 'Components/UI'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import './theme.css'
 import './App.scss'
-import { useSetRecoilState } from 'recoil'
-import { stageDimsAtom } from 'State'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { canDragCanvasAtom, selectedToolAtom, stageDimsAtom } from 'State'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { handleZoom } from 'Helpers'
 import Konva from 'konva'
@@ -25,36 +21,58 @@ function App() {
     setStageDims(entry.contentRect),
   )
 
-  const [tab, setTab] = useState('')
-  const handleSelectTab = (selection: string) => {
-    setTab(selection === tab ? '' : selection)
+  const [tool, setTool] = useRecoilState(selectedToolAtom)
+  const handleSelectTool = (selection: string) => {
+    setTool((prevTool) => (selection === prevTool ? '' : selection))
   }
+  const [canDragCanvas, setCanDragCanvas] = useRecoilState(canDragCanvasAtom)
 
   const stageRef = useRef<Konva.Stage>(null)
-  const [zoom, setZoom] = useState({ x: 1, y: 1 })
+  // future zoom stage will be needed as click to zoom is added
   const handleZoomSet = (e: KonvaEventObject<WheelEvent>) => {
     if (!stageRef.current) return
-    setZoom(handleZoom(e, stageRef.current))
+    handleZoom(e, stageRef.current)
   }
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'Space') {
+        setCanDragCanvas(true)
+      }
+    }
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.code === 'Space') {
+        setCanDragCanvas(false)
+      }
+    }
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.code === 'KeyU') {
+        handleSelectTool('shape')
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+    window.addEventListener('keypress', handleKeyPress)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
+      window.removeEventListener('keypress', handleKeyPress)
+    }
+  }, [])
+
   return (
-    <div className="App">
+    <div className={`App ${canDragCanvas ? 'App--is-dragging' : ''}`}>
       <Sidebar
         elements={
           <GridBox gap="0.25rem">
             <Button
-              kind={tab === 'select' ? 'default' : 'text'}
-              onClick={() => handleSelectTab('select')}
-              iconLeft={<FontAwesomeIcon icon={faMousePointer} />}
+              kind={tool === 'shape' ? 'default' : 'text'}
+              onClick={() => handleSelectTool('shape')}
+              iconLeft={<FontAwesomeIcon icon={faSquareFull} />}
             />
             <Button
-              kind={tab === 'shape' ? 'default' : 'text'}
-              onClick={() => handleSelectTab('shape')}
-              iconLeft={<FontAwesomeIcon icon={faShapes} />}
-            />
-            <Button
-              kind={tab === 'zoom' ? 'default' : 'text'}
-              onClick={() => handleSelectTab('zoom')}
+              kind={tool === 'zoom' ? 'default' : 'text'}
+              onClick={() => handleSelectTool('zoom')}
               iconLeft={<FontAwesomeIcon icon={faSearch} />}
             />
           </GridBox>

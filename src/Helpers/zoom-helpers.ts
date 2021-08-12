@@ -29,7 +29,7 @@ export const basicZoom = (
 export const handleZoom = (e: KonvaEventObject<WheelEvent>, stage: Stage) => {
   const pointer = stage.getPointerPosition() || { x: 0, y: 0 }
   const zoomingIn = e.evt.deltaY > 0
-  const min = 0.5
+  const min = 0.1
   // scale of 1 is the lowest zoom setting...
   // ...if scale is 1 or less while zooming out...
   // ...return so no negative zoom occurs

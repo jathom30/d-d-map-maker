@@ -241,3 +241,28 @@ export const placeImage = (
     y: parentHeight / 2 - imageHeight / 2,
   }
 }
+
+export const getCreateOnDragPos = (
+  startPos: PositionType,
+  stopPos: PositionType,
+) => {
+  const left = startPos.x < stopPos.x ? startPos.x : stopPos.x
+  const top = startPos.y < stopPos.y ? startPos.y : stopPos.y
+  return {
+    x: left,
+    y: top,
+  }
+}
+
+export const getCreateOnDragDims = (
+  startPos: PositionType,
+  stopPos: PositionType,
+  grid: number,
+) => {
+  const exactWidth = Math.abs(startPos.x - stopPos.x)
+  const exactHeight = Math.abs(startPos.y - stopPos.y)
+  return {
+    width: Math.round(exactWidth / grid) * grid,
+    height: Math.round(exactHeight / grid) * grid,
+  }
+}
