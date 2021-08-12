@@ -1,0 +1,10 @@
+@import 'src/tokens';
+
+.Header {
+  display: flex;
+  background-color: $color-primary;
+  color: $text-on-primary;
+  position: relative;
+  z-index: 1;
+  box-shadow: $box-shadow-200;
+}

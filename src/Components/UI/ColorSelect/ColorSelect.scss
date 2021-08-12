@@ -1,0 +1,36 @@
+@import 'src/tokens';
+
+.ColorSelect {
+  position: relative;
+  &__button-wrapper {
+    /* prettier-ignore */
+    background-image:
+      linear-gradient(45deg, $color-grey-300 25%, transparent 25%),
+      linear-gradient(-45deg, $color-grey-300 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, $color-grey-300 75%),
+      linear-gradient(-45deg, transparent 75%, $color-grey-300 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+    height: 2rem;
+    min-width: 2rem;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    &--is-disabled {
+      pointer-events: none;
+    }
+  }
+  &__button {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 1px solid $color-grey-300;
+    cursor: pointer;
+    &:hover {
+      box-shadow: $box-shadow-300-focus;
+    }
+  }
+  &__color-picker {
+    position: fixed;
+    z-index: 1;
+  }
+}

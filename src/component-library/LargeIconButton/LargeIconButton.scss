@@ -1,0 +1,63 @@
+@import 'src/tokens';
+
+.LargeIconButton {
+  cursor: pointer;
+  text-decoration: none;
+  background: white;
+  border: $border-width-default solid $text-on-white--primary;
+  color: $text-on-white--primary;
+  text-align: left;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  transition: $transition-150;
+  border-radius: $border-radius-m;
+  font-size: $text-size-m;
+  &__icon {
+    padding-right: 1rem;
+  }
+  &__title {
+    margin: 0;
+    font-size: $text-size-l;
+    font-weight: bold;
+  }
+  &__right-text {
+    margin-left: auto;
+  }
+  &__link {
+    text-decoration: none;
+  }
+  &:disabled {
+    background: $color-grey-050;
+    color: $text-on-grey-050--subdued;
+    border-color: $text-on-grey-050--subdued;
+    cursor: not-allowed;
+    &:hover {
+      background: $color-grey-050;
+      color: $text-on-grey-050--subdued;
+      border-color: $text-on-grey-050--subdued;
+      box-shadow: none;
+    }
+  }
+  &:hover {
+    background-color: $color-primary;
+    color: $text-on-primary;
+    border-color: $text-on-primary;
+    box-shadow: $box-shadow-200;
+  }
+  &:active {
+    outline: none;
+    box-shadow: $box-shadow-400-focus;
+  }
+  &:focus {
+    box-shadow: $focus-ring;
+    outline: none;
+  }
+  &:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+  }
+  &:focus-visible {
+    box-shadow: $focus-ring;
+  }
+}

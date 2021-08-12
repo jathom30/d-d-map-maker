@@ -1,0 +1,19 @@
+.TagInput {
+  input {
+    width: 100%;
+  }
+  &__tags {
+    display: inline-flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    &--tag {
+      margin-right: 0.25rem;
+    }
+  }
+  &__input {
+    flex-grow: 1;
+  }
+}

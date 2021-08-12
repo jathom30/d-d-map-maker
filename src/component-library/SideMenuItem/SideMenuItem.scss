@@ -1,0 +1,40 @@
+@import 'src/tokens';
+@import 'src/mixins';
+
+.SideMenuItem {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  color: inherit;
+  text-align: start;
+  font-size: inherit;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  width: 100%;
+  &__label {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @include focus-ring-inset;
+  &:hover {
+    background-color: $color-primary-lighter;
+    color: $text-on-primary-lighter;
+  }
+  &--is-active {
+    background-color: $color-primary;
+    color: $text-on-primary;
+  }
+  &--is-child {
+    font-weight: normal;
+  }
+  &--is-not-clickable {
+    pointer-events: none;
+  }
+}

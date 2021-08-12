@@ -1,0 +1,38 @@
+@import 'src/tokens';
+
+.Sidebar {
+  background: $color-white;
+  box-shadow: $box-shadow-400;
+  display: flex;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  &--left {
+    left: 0;
+  }
+  &--right {
+    right: 0;
+  }
+  &__bar {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &__body {
+    display: flex;
+    background: $color-white;
+    border-left: $border-width-thin solid $color-grey-100;
+    width: max-content;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    &--left {
+      left: 100%;
+    }
+    &--right {
+      right: 100%;
+    }
+  }
+}

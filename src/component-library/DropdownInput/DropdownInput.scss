@@ -1,0 +1,28 @@
+@import 'src/tokens';
+
+.DropdownInput {
+  &__dropdown {
+    background: $color-white;
+    margin-top: 0.25rem;
+    padding: 0.5rem;
+    border: $border-width-default solid $color-grey-300;
+    border-radius: $border-radius-s;
+    overflow: auto;
+    display: grid;
+    // arbitrary height, can be updated as we see fit
+    max-height: 150px;
+  }
+  &__result {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-size: $text-size-m;
+    cursor: pointer;
+    &:hover {
+      background: $color-primary-100;
+    }
+  }
+}

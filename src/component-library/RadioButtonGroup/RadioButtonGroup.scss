@@ -1,0 +1,11 @@
+@import 'src/tokens';
+
+.RadioButtonGroup {
+  display: grid;
+  grid-template-columns: max-content;
+  padding: $pixels-5;
+}
+
+.RadioButtonGroup--horizontal {
+  display: flex;
+}

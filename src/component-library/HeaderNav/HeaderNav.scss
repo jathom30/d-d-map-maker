@@ -1,0 +1,8 @@
+@import 'src/tokens';
+
+.HeaderNav {
+  display: flex;
+  &--right {
+    margin-left: auto;
+  }
+}

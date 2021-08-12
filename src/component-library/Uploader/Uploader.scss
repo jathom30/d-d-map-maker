@@ -1,0 +1,8 @@
+@import 'src/tokens';
+@import 'src/mixins';
+
+.Uploader {
+  @include focus-ring;
+  cursor: pointer;
+  border: dashed $border-width-default $color-grey-300;
+}

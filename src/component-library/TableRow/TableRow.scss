@@ -1,0 +1,51 @@
+@import 'src/tokens';
+
+.TableRow {
+  background-color: $color-white;
+  border-bottom: 1px solid $color-grey-200;
+  &__expand {
+    width: 1.5rem;
+  }
+  &__expansion {
+    background-color: $color-white;
+    box-shadow: inset 0 0.6875rem 0.5rem -0.625rem $color-grey-200,
+      inset 0 -0.6875rem 0.5rem -0.625rem $color-grey-200;
+  }
+  &__caret {
+    margin-left: 0.5rem;
+    font-size: 1.3rem;
+    color: $color-primary;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    background: none;
+  }
+  &__spacer {
+    height: 0.5rem;
+  }
+  &--alternate {
+    background-color: $color-grey-050;
+  }
+  &--selected {
+    box-shadow: inset 2px 2px $color-primary, inset -2px -2px $color-primary;
+  }
+  &--has-on-click {
+    cursor: pointer;
+  }
+  &__checkbox {
+    width: 3.5rem;
+    text-align: left;
+    padding: 0.8rem 1rem;
+    .Checkbox {
+      &__wrapper-label {
+        padding: 0.25rem;
+      }
+      &__input-wrapper {
+        margin: 0;
+      }
+    }
+  }
+  &:hover {
+    background-color: $color-primary-050;
+  }
+}

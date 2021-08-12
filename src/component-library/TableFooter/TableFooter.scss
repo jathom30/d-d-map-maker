@@ -1,0 +1,20 @@
+@import "src/tokens";
+
+.TableFooter {
+  color: $color-grey-900;
+  &__cell {
+    padding: 0.5rem 1rem;
+    &--right {
+      text-align: right;
+    }
+    &--left {
+      text-align: left;
+    }
+    &--center {
+      text-align: center;
+    }
+    &--bold {
+      font-weight: bold;
+    }
+  }
+}

@@ -1,0 +1,28 @@
+@import 'src/tokens';
+
+$track-bar-height: 0.5rem;
+
+.MinMaxSliderPrecise {
+  &__thumb {
+    position: absolute;
+    bottom: $track-bar-height / 2;
+    width: 1rem;
+    height: 1rem;
+    background-color: $color-primary;
+    border-radius: 100rem;
+    &--has-keyboard-focus {
+      box-shadow: $focus-ring;
+    }
+    &--is-dragging {
+      box-shadow: $box-shadow-200-dark;
+    }
+    &--min {
+      right: 0;
+      border-bottom-right-radius: 0;
+    }
+    &--max {
+      left: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}

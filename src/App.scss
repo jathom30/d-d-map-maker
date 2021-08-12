@@ -1,0 +1,10 @@
+.App {
+  isolation: isolate;
+  display: flex;
+  height: 100vh;
+  background-color: var(--color-primary-050);
+  &__stage {
+    width: 100%;
+    height: 100%;
+  }
+}

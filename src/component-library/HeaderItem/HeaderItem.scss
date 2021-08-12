@@ -1,0 +1,28 @@
+@import 'src/tokens';
+@import 'src/mixins';
+
+.HeaderItem {
+  height: 100%;
+  color: $text-on-primary;
+  text-decoration: none;
+  text-align: start;
+  border: none;
+  background-color: transparent;
+  font-size: inherit;
+  cursor: pointer;
+  padding: 1rem;
+  font-family: inherit;
+
+  @include focus-ring-inset;
+  &:hover {
+    background-color: $color-primary-lighter;
+    color: $text-on-primary-lighter;
+  }
+  &__icon {
+    margin-right: 0.5rem;
+  }
+}
+
+.HeaderItem--is-active {
+  background-color: $color-primary-lighter;
+}

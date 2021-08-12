@@ -1,0 +1,57 @@
+@import 'src/tokens';
+
+.TableHeader {
+  color: $color-grey-700;
+  &__cell {
+    text-align: left;
+    padding: 1rem;
+    border: none;
+    &--sticky {
+      background-color: $color-white;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    &--icon {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    &--sort {
+      cursor: pointer;
+      .fa-angle-down,
+      .fa-angle-up {
+        color: $color-grey-200;
+      }
+    }
+    &--checkbox {
+      width: 3.5rem;
+      .Checkbox {
+        &__wrapper-label {
+          padding: 0.25rem;
+        }
+        &__input-wrapper {
+          margin: 0;
+        }
+      }
+    }
+  }
+  &__expand {
+    width: 1.5rem;
+  }
+  &__label-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    &--right {
+      justify-content: flex-end;
+    }
+    &--left {
+      justify-content: flex-start;
+    }
+    &--center {
+      justify-content: center;
+    }
+  }
+}

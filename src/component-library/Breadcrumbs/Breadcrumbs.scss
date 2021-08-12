@@ -1,0 +1,25 @@
+@import 'src/tokens';
+
+.Breadcrumbs {
+  display: flex;
+  align-items: center;
+  &__separator {
+    margin: 0 0.5rem;
+  }
+}
+
+.Breadcrumb {
+  cursor: pointer;
+  text-decoration: none;
+  color: $color-primary;
+  &--is-active {
+    color: $color-primary;
+    font-weight: $text-weight-bold;
+  }
+  &--link {
+    &:hover {
+      text-decoration: underline;
+    }
+  
+  }
+}

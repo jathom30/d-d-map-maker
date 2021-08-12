@@ -1,0 +1,73 @@
+@import 'src/tokens';
+@import 'src/mixins';
+@import '../input-variables';
+
+@mixin toggleSize($height) {
+  border-radius: $height * 3;
+  height: $height;
+  width: $height * 1.75;
+  .Toggle__slider {
+    height: $height * 0.75;
+    width: $height * 0.75;
+    left: 50%;
+    transform: translateX(-100%);
+    &--is-checked {
+      transform: translateX(0);
+    }
+  }
+}
+
+.Toggle {
+  cursor: pointer;
+  background: $color-grey-200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background ease 0.3s;
+  &:hover {
+    box-shadow: $box-shadow-200;
+  }
+  &--has-keyboard-focus,
+  &--has-keyboard-focus:hover {
+    box-shadow: $box-shadow-200-focus;
+  }
+  &--is-checked {
+    background: $color-primary;
+  }
+  &--is-disabled {
+    background: $color-grey-100;
+    cursor: default;
+    pointer-events: none;
+    &.Toggle--is-checked {
+      background: $color-grey-200;
+    }
+  }
+  &__input {
+    height: 0;
+    width: 0;
+    opacity: 0;
+  }
+  &__slider {
+    background: $color-white;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    transition: all ease 0.3s;
+    &--is-disabled {
+      background: $color-white;
+    }
+  }
+  &--s-size {
+    @include toggleSize($input-height-s);
+  }
+  &--m-size {
+    @include toggleSize($input-height-m);
+  }
+  &--l-size {
+    @include toggleSize($input-height-l);
+  }
+  &--xl-size {
+    @include toggleSize($input-height-xl);
+  }
+}

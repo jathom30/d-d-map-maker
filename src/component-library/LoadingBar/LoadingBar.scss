@@ -1,0 +1,34 @@
+@import 'src/tokens';
+$width: 50%;
+
+@keyframes flowing {
+  0% {
+    left: -#{$width};
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.LoadingBar {
+  display: flex;
+  flex-grow: 1;
+  border-radius: $border-radius-m;
+  overflow: hidden;
+  background: $color-grey-100;
+  position: relative;
+  max-height: 1rem;
+  min-height: 1rem;
+  &__bar {
+    background: $color-grey-300;
+    &--basic-transition {
+      transition: all ease 0.5s;
+    }
+    &--is-flowing {
+      height: 100%;
+      width: $width;
+      position: absolute;
+      animation: flowing 3s linear infinite alternate;
+    }
+  }
+}

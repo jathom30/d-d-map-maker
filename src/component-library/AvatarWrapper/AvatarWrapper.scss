@@ -1,0 +1,33 @@
+@import 'src/tokens';
+@import 'src/mixins';
+
+.AvatarWrapper {
+  color: $color-white;
+  position: relative;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  width: max-content;
+  padding: 0;
+
+  @include focus-ring;
+  .Avatar {
+    margin: 0;
+    padding: 0;
+  }
+  &__overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  &--dim {
+    .Avatar {
+      filter: brightness(40%);
+    }
+  }
+}

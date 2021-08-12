@@ -1,0 +1,8 @@
+@import 'src/tokens';
+
+.HorizontalRule {
+  background-color: $color-primary-lighter;
+  height: $border-width-default;
+  border-radius: $border-radius-s;
+  margin: 0 0.5rem;
+}

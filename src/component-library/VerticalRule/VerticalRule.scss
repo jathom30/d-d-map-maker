@@ -1,0 +1,8 @@
+@import 'src/tokens';
+
+.VerticalRule {
+  background-color: $color-primary-lighter;
+  width: $border-width-default;
+  border-radius: $border-radius-s;
+  margin: 0.5rem 0;
+}

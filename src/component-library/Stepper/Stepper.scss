@@ -1,0 +1,12 @@
+.Stepper {
+  display: block;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 1rem;
+  }
+}

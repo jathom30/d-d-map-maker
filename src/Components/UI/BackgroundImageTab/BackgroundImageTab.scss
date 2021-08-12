@@ -1,0 +1,32 @@
+@import 'src/tokens.scss';
+
+.BackgroundImageTab {
+  height: 100%;
+  &__photo-container {
+    margin: 0.5rem 1rem;
+  }
+  &__breadcrumb {
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: $border-radius-s;
+    text-decoration: underline;
+    &:hover {
+      box-shadow: $box-shadow-300-focus;
+    }
+  }
+  &__temp-uploader {
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed $color-grey-400;
+    border-radius: $border-radius-m;
+    cursor: pointer;
+    &:hover {
+      border-color: $color-grey-600;
+    }
+  }
+}

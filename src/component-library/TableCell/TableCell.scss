@@ -1,0 +1,26 @@
+@import 'src/tokens';
+
+.TableCell {
+  text-align: left;
+  padding: 0.8rem 1rem;
+  position: relative;
+  &--right {
+    text-align: right;
+  }
+  &--left {
+    text-align: left;
+  }
+  &--center {
+    text-align: center;
+  }
+  &__text-overflow {
+    position: absolute;
+    padding: calc(1rem - 1px);
+    background: $color-white;
+    border: $pixels-1 solid $color-grey-200;
+    box-shadow: $box-shadow-200;
+    border-radius: $border-radius-s;
+    display: flex;
+    align-items: center;
+  }
+}

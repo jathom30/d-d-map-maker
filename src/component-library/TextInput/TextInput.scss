@@ -1,0 +1,74 @@
+@import 'src/tokens';
+@import '../input-variables';
+
+.TextInput {
+  display: flex;
+  align-items: center;
+  border: $border-width-default solid $color-grey-300;
+  border-radius: $border-radius-s;
+  background: $color-white;
+  height: calc(
+    #{$input-height-m} - var(--border-width-default) - var(--border-width-default)
+  );
+  &:active {
+    box-shadow: $focus-ring;
+  }
+  &:focus-within {
+    box-shadow: $focus-ring;
+    &:active {
+      box-shadow: $focus-ring;
+    }
+  }
+  &__iconLeft {
+    color: $color-grey-500;
+    padding: 0 $pixels-4;
+  }
+  &__iconRight {
+    color: $color-grey-500;
+    padding: 0 $pixels-4;
+  }
+  &__input {
+    border: none;
+    font-size: $text-size-m;
+    flex-grow: 1;
+    padding: 0 $pixels-4;
+    margin: 0 $pixels-4;
+    width: 100%;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.TextInput--s-size {
+  height: calc(
+    #{$input-height-s} - var(--border-width-default) - var(--border-width-default)
+  );
+  font-size: $text-size-xs;
+}
+
+.TextInput--s-size .TextInput__input {
+  font-size: $text-size-xs;
+}
+
+.TextInput--l-size {
+  height: calc(
+    #{$input-height-l} - var(--border-width-default) - var(--border-width-default)
+  );
+  font-size: $text-size-l;
+}
+
+.TextInput--l-size .TextInput__input {
+  font-size: $text-size-l;
+}
+
+.TextInput--xl-size {
+  height: calc(
+    #{$input-height-xl} - var(--border-width-default) - var(--border-width-default)
+  );
+  font-size: $text-size-xl;
+}
+
+.TextInput--xl-size .TextInput__input {
+  font-size: $text-size-xl;
+}

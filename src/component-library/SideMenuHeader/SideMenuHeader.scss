@@ -1,0 +1,11 @@
+@import 'src/tokens';
+
+.SideMenuHeader {
+  display: block;
+  padding: 0.5rem;
+  color: inherit;
+  &__title {
+    font-weight: bold;
+    font-size: $text-size-l;
+  }
+}

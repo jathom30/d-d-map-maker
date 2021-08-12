@@ -1,0 +1,63 @@
+@import 'src/tokens';
+
+.HeaderDropdown {
+  $this: &;
+  height: 100%;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  &__button {
+    color: inherit;
+    border: none;
+    background-color: transparent;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    cursor: pointer;
+    padding: 1rem;
+    &:focus {
+      box-shadow: $focus-ring-inset;
+      outline: none;
+    }
+    &:focus:not(:focus-visible) {
+      box-shadow: none;
+      outline: none;
+    }
+    &:focus-visible {
+      box-shadow: $focus-ring-inset;
+    }
+  }
+  &:hover {
+    background-color: $color-primary-lighter;
+  }
+  &__iconLeft {
+    margin-right: 0.5rem;
+  }
+  &__icon {
+    margin-left: 0.5rem;
+    transition: transform $transition-150;
+
+    #{$this}--is-open & {
+      transform: rotate(-0.5turn);
+    }
+  }
+  &__options {
+    display: flex;
+    flex-direction: column;
+    box-shadow: $box-shadow-400;
+    background-color: $color-white;
+    width: max-content;
+    position: absolute;
+    overflow: hidden;
+    top: calc(100% - 0.25rem);
+    border-radius: $border-radius-m;
+
+    #{$this}--position-left & {
+      right: 0.25rem;
+    }
+
+    #{$this}--position-right & {
+      left: 0.25rem;
+    }
+  }
+}

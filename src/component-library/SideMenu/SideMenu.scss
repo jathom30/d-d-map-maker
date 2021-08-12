@@ -1,0 +1,8 @@
+@import 'src/tokens';
+
+.SideMenu {
+  background: $color-white;
+  border-right: $border-width-default solid $color-grey-200;
+  box-shadow: $box-shadow-200;
+  min-width: 250px;
+}

@@ -1,0 +1,28 @@
+@import 'src/tokens';
+
+.Tab {
+  position: relative;
+  display: flex;
+  padding: 0.5rem 2rem;
+  cursor: pointer;
+  background: transparent;
+  color: $text-on-grey-100;
+  border: $border-width-thin solid transparent;
+  border-bottom: none;
+  border-radius: $border-radius-m;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  &--is-active {
+    cursor: default;
+  }
+  &--is-disabled {
+    pointer-events: none;
+    cursor: default;
+    .Tab__label {
+      opacity: 0.25;
+    }
+  }
+  &:focus {
+    outline: none;
+  }
+}

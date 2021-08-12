@@ -1,0 +1,21 @@
+@import 'src/tokens';
+
+.HeaderLogo {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  &:focus {
+    box-shadow: $focus-ring-inset;
+    outline: none;
+  }
+  &:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+  }
+  &:focus-visible {
+    box-shadow: $focus-ring-inset;
+  }
+  &__image {
+    height: 2rem;
+  }
+}
