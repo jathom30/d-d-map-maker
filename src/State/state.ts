@@ -12,7 +12,7 @@ export const gridSizeAtom = atom({
 
 export const selectedToolAtom = atom({
   key: 'selectedTool',
-  default: '',
+  default: 'pointer',
 })
 
 export const canDragCanvasAtom = atom({

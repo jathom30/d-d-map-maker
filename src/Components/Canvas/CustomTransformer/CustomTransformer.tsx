@@ -1,6 +1,6 @@
 import { getGridPosition, onGrid } from 'Helpers'
 import { KonvaEventObject } from 'konva/lib/Node'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Rect, Group } from 'react-konva'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import {

@@ -1,5 +1,6 @@
 import {
   faArrowsAlt,
+  faMousePointer,
   faSearch,
   faSquareFull,
 } from '@fortawesome/free-solid-svg-icons'
@@ -11,8 +12,14 @@ import { Sidebar } from 'Components/UI'
 import React, { useEffect, useRef } from 'react'
 import './theme.css'
 import './App.scss'
-import { useRecoilState, useSetRecoilState } from 'recoil'
-import { canDragCanvasAtom, selectedToolAtom, stageDimsAtom } from 'State'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import {
+  blockIdsAtom,
+  canDragCanvasAtom,
+  selectedBlockIdAtom,
+  selectedToolAtom,
+  stageDimsAtom,
+} from 'State'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { handleZoom } from 'Helpers'
 import Konva from 'konva'
@@ -27,9 +34,12 @@ function App() {
 
   const [tool, setTool] = useRecoilState(selectedToolAtom)
   const handleSelectTool = (selection: string) => {
-    setTool((prevTool) => (selection === prevTool ? '' : selection))
+    setTool((prevTool) => (selection === prevTool ? 'pointer' : selection))
   }
   const [canDragCanvas, setCanDragCanvas] = useRecoilState(canDragCanvasAtom)
+
+  const setBlockIds = useSetRecoilState(blockIdsAtom)
+  const selectedBlock = useRecoilValue(selectedBlockIdAtom)
 
   const stageRef = useRef<Konva.Stage>(null)
   // future zoom stage will be needed as click to zoom is added
@@ -43,24 +53,30 @@ function App() {
       if (e.code === 'Space') {
         setCanDragCanvas(true)
       }
+      if (e.code === 'Backspace') {
+        setBlockIds((prevBlocks) => {
+          return prevBlocks.filter((block) => {
+            return block !== selectedBlock
+          })
+        })
+      }
+      if (e.code === 'KeyU') {
+        handleSelectTool('shape')
+      }
+      if (e.code === 'KeyV') {
+        handleSelectTool('pointer')
+      }
     }
     const handleKeyUp = (e: KeyboardEvent) => {
       if (e.code === 'Space') {
         setCanDragCanvas(false)
       }
     }
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.code === 'KeyU') {
-        handleSelectTool('shape')
-      }
-    }
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('keyup', handleKeyUp)
-    window.addEventListener('keypress', handleKeyPress)
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
-      window.removeEventListener('keypress', handleKeyPress)
     }
   }, [])
 
@@ -74,6 +90,11 @@ function App() {
         elements={
           <GridBox gap="0.25rem">
             <Button
+              kind={tool === 'pointer' ? 'default' : 'text'}
+              onClick={() => handleSelectTool('pointer')}
+              iconLeft={<FontAwesomeIcon icon={faMousePointer} />}
+            />
+            <Button
               kind={tool === 'grab' ? 'default' : 'text'}
               onClick={() => handleSelectTool('grab')}
               iconLeft={<FontAwesomeIcon icon={faArrowsAlt} />}
@@ -83,11 +104,11 @@ function App() {
               onClick={() => handleSelectTool('shape')}
               iconLeft={<FontAwesomeIcon icon={faSquareFull} />}
             />
-            <Button
+            {/* <Button
               kind={tool === 'zoom' ? 'default' : 'text'}
               onClick={() => handleSelectTool('zoom')}
               iconLeft={<FontAwesomeIcon icon={faSearch} />}
-            />
+            /> */}
           </GridBox>
         }
       />
