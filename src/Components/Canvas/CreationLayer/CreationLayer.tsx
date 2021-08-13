@@ -12,10 +12,14 @@ import {
   creationPosAtom,
   gridSizeAtom,
   isCreatingShapeAtom,
+  insideLassoSelector,
+  selectedToolAtom,
+  selectedBlockIdsAtom,
 } from 'State'
 import { v4 as uuid } from 'uuid'
 
 export const CreationLayer = () => {
+  const tool = useRecoilValue(selectedToolAtom)
   const canvasDims = useRecoilValue(canvasDimsSelector)
   const setBlockIds = useSetRecoilState(blockIdsAtom)
   const gridSize = useRecoilValue(gridSizeAtom)
@@ -24,8 +28,11 @@ export const CreationLayer = () => {
     useRecoilState(isCreatingShapeAtom)
   const setCreationPos = useSetRecoilState(creationPosAtom)
   const setCreationDims = useSetRecoilState(creationDimsAtom)
-  const [tempDims, setTempDims] = useRecoilState(blockDimsAtom('create'))
-  const [tempPos, setTempPos] = useRecoilState(blockPosAtom('create'))
+  const [tempDims, setTempDims] = useRecoilState(blockDimsAtom(tool))
+  const [tempPos, setTempPos] = useRecoilState(blockPosAtom(tool))
+
+  const insideSelector = useRecoilValue(insideLassoSelector)
+  const setSelected = useSetRecoilState(selectedBlockIdsAtom)
 
   const handleMouseDown = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
     setIsCreatingShape(true)
@@ -62,12 +69,28 @@ export const CreationLayer = () => {
     )
     const x = Math.round(pos.x / gridSize) * gridSize
     const y = Math.round(pos.y / gridSize) * gridSize
-    setCreationPos(getCreateOnDragPos(clickStartPos, { x, y }))
-    setCreationDims({ width, height })
-    const newBlockId = uuid()
-    setBlockIds((prevIds) => {
-      return [...prevIds, newBlockId]
-    })
+    if (tool === 'shape') {
+      setCreationPos(getCreateOnDragPos(clickStartPos, { x, y }))
+      setCreationDims({ width, height })
+      const newBlockId = uuid()
+      setBlockIds((prevIds) => {
+        return [...prevIds, newBlockId]
+      })
+    }
+    if (tool === 'select') {
+      setSelected(insideSelector)
+    }
+  }
+
+  const stroke = () => {
+    switch (tool) {
+      case 'shape':
+        return { color: 'red', width: 3 }
+      case 'select':
+        return { color: 'orange', width: 2 }
+      default:
+        return { color: 'grey', width: 1 }
+    }
   }
 
   return (
@@ -84,8 +107,8 @@ export const CreationLayer = () => {
         <Rect
           x={tempPos.x}
           y={tempPos.y}
-          stroke="red"
-          strokeWidth={3}
+          stroke={stroke().color}
+          strokeWidth={stroke().width}
           width={tempDims.width}
           height={tempDims.height}
         />

@@ -1,29 +1,29 @@
+import React from 'react'
 import { getGridPosition, onGrid } from 'Helpers'
 import { KonvaEventObject } from 'konva/lib/Node'
-import React, { useEffect } from 'react'
 import { Rect, Group } from 'react-konva'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   blockDimsAtom,
-  blockPosAtom,
   canvasDimsSelector,
   gridSizeAtom,
-  selectedBlockIdAtom,
+  selectedBlockIdsAtom,
+  selectedPosSelector,
 } from 'State'
 import './CustomTransformer.scss'
+import { SelectedBlock } from '../SelectedBlock'
 
-export const CustomTransformer: React.FC<{ id: string }> = ({ id }) => {
-  const [{ width, height }, setDims] = useRecoilState(blockDimsAtom(id))
-  const setSelected = useSetRecoilState(selectedBlockIdAtom)
-  const [{ x, y }, setPos] = useRecoilState(blockPosAtom(id))
+export const CustomTransformer = () => {
+  // const tempId = ''
+  const selectedIds = useRecoilValue(selectedBlockIdsAtom)
+  const [{ x, y, width, height }, setPos] = useRecoilState(selectedPosSelector)
+  const setDims = useSetRecoilState(blockDimsAtom(selectedIds[0]))
   const canvasDims = useRecoilValue(canvasDimsSelector)
   const gridSize = useRecoilValue(gridSizeAtom)
   const handleSize = gridSize / 2
   const centerOfHandle = handleSize / 2
 
-  const handleResizeBottomRight = (
-    e: KonvaEventObject<DragEvent | TouchEvent>,
-  ) => {
+  const handleResize = (e: KonvaEventObject<DragEvent | TouchEvent>) => {
     // get distance to center of handle
 
     // active axis needed to be offset by center of handle after applied to grid
@@ -51,30 +51,38 @@ export const CustomTransformer: React.FC<{ id: string }> = ({ id }) => {
       canvasDims,
     )
     e.currentTarget.position(gridPos)
-    setPos(gridPos)
+  }
+
+  const handleDragEnd = (e: KonvaEventObject<DragEvent>) => {
+    const pos = e.currentTarget.position()
+    setPos({ ...pos, width, height })
   }
 
   return (
-    <Group x={x} y={y} draggable onDragMove={handleDragGroup}>
-      <Rect
-        width={width}
-        height={height}
-        stroke="orange"
-        strokeWidth={3}
-        onClick={() => setSelected('')}
-        onTap={() => setSelected('')}
-      />
-      <Rect
-        name="bottom-right"
-        width={handleSize}
-        height={handleSize}
-        x={width - handleSize / 2}
-        y={height - handleSize / 2}
-        fill="orange"
-        draggable
-        onDragMove={handleResizeBottomRight}
-        onTouchMove={handleResizeBottomRight}
-      />
+    <Group
+      x={x}
+      y={y}
+      draggable
+      onDragMove={handleDragGroup}
+      onDragEnd={handleDragEnd}
+    >
+      <Rect width={width} height={height} stroke="orange" strokeWidth={3} />
+      {selectedIds.map((id) => (
+        <SelectedBlock key={id} id={id} />
+      ))}
+      {selectedIds.length === 1 && (
+        <Rect
+          name="bottom-right"
+          width={handleSize}
+          height={handleSize}
+          x={width - handleSize / 2}
+          y={height - handleSize / 2}
+          fill="orange"
+          draggable
+          onDragMove={handleResize}
+          onTouchMove={handleResize}
+        />
+      )}
     </Group>
   )
 }

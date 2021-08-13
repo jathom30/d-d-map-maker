@@ -12,7 +12,7 @@ import {
   blockIdsAtom,
   canDragCanvasAtom,
   canvasDimsSelector,
-  selectedBlockIdAtom,
+  selectedBlockIdsAtom,
   selectedToolAtom,
   stageDimsAtom,
 } from 'State'
@@ -31,7 +31,7 @@ export const CreativeStage: React.FC<{
   const stageDims = useRecoilValue(stageDimsAtom)
   const blockIds = useRecoilValue(blockIdsAtom)
 
-  const selectedBlock = useRecoilValue(selectedBlockIdAtom)
+  const selectedBlocks = useRecoilValue(selectedBlockIdsAtom)
 
   const tool = useRecoilValue(selectedToolAtom)
   const canDragCanvas = useRecoilValue(canDragCanvasAtom)
@@ -57,11 +57,18 @@ export const CreativeStage: React.FC<{
             dragBoundFunc={(pos) => handleCoverDrag(pos, groupRef.current)}
           >
             <GridLayer />
-            {tool === 'shape' && <CreationLayer />}
-            {blockIds.map((blockId) => (
-              <Block key={blockId} id={blockId} />
-            ))}
-            {!!selectedBlock && <CustomTransformer id={selectedBlock} />}
+            {(tool === 'shape' || tool === 'select') && <CreationLayer />}
+            {blockIds
+              .filter(
+                (blockId) =>
+                  !selectedBlocks.some(
+                    (selectedBlock) => selectedBlock === blockId,
+                  ),
+              )
+              .map((blockId) => (
+                <Block key={blockId} id={blockId} />
+              ))}
+            {!!selectedBlocks.length && <CustomTransformer />}
             {/* below rect used as grab handle for parent group */}
             {canDrag && (
               <Rect height={canvasDims.height} width={canvasDims.width} />

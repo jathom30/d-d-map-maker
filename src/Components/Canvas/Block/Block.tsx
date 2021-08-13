@@ -1,4 +1,4 @@
-import { getGridPosition } from 'Helpers'
+import { getGridPosition, isInArray } from 'Helpers'
 import { KonvaEventObject } from 'konva/lib/Node'
 import React, { useEffect } from 'react'
 import { Group, Rect } from 'react-konva'
@@ -11,9 +11,10 @@ import {
   creationPosAtom,
   gridSizeAtom,
   isCreatingShapeAtom,
-  selectedBlockIdAtom,
+  isSelectedSelector,
+  selectedBlockIdsAtom,
 } from 'State'
-import { CustomTransformer } from '../CustomTransformer'
+import { DungeonWall } from '../DungeonWall'
 
 export const Block: React.FC<{ id: string }> = ({ id }) => {
   const [{ width, height }, setDims] = useRecoilState(blockDimsAtom(id))
@@ -25,16 +26,21 @@ export const Block: React.FC<{ id: string }> = ({ id }) => {
   const creationPos = useRecoilValue(creationPosAtom)
   const creationDims = useRecoilValue(creationDimsAtom)
 
-  const setSelectedBlockId = useSetRecoilState(selectedBlockIdAtom)
+  const setSelectedBlockIds = useSetRecoilState(selectedBlockIdsAtom)
+  const isSelected = useRecoilValue(isSelectedSelector(id))
 
   const handleClick = (e: KonvaEventObject<MouseEvent>) => {
     e.cancelBubble = true
-    setSelectedBlockId((prevSelected) => {
-      if (prevSelected === id) {
-        return ''
-      }
-      return id
-    })
+    if (e.evt.shiftKey) {
+      setSelectedBlockIds((prevSelected) => {
+        if (isInArray(prevSelected, id)) {
+          return prevSelected.filter((selected) => selected !== id)
+        }
+        return [...prevSelected, id]
+      })
+      return
+    }
+    setSelectedBlockIds([id])
   }
 
   const handleMove = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
@@ -42,11 +48,7 @@ export const Block: React.FC<{ id: string }> = ({ id }) => {
     e.currentTarget.position(
       getGridPosition(currentPos, { width, height }, gridSize, canvasDims),
     )
-  }
-
-  const handleMoveEnd = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
-    const currentPos = e.currentTarget.position()
-    setPos(currentPos)
+    setPos(getGridPosition(currentPos, { width, height }, gridSize, canvasDims))
   }
 
   useEffect(() => {
@@ -65,8 +67,6 @@ export const Block: React.FC<{ id: string }> = ({ id }) => {
       y={y}
       onTouchMove={handleMove}
       onDragMove={handleMove}
-      onTouchEnd={handleMoveEnd}
-      onDragEnd={handleMoveEnd}
       draggable
     >
       <Rect
@@ -76,7 +76,13 @@ export const Block: React.FC<{ id: string }> = ({ id }) => {
         listening={!isCreatingShape}
         onClick={handleClick}
         onTap={handleClick}
+        stroke="orange"
+        strokeWidth={isSelected ? 1 : 0}
       />
+      <DungeonWall id={id} side="top" />
+      <DungeonWall id={id} side="bottom" />
+      <DungeonWall id={id} side="left" />
+      <DungeonWall id={id} side="right" />
     </Group>
   )
 }

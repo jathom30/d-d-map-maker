@@ -9,3 +9,7 @@ export const getCenterPos = (parent: DimensionsType, child: DimensionsType) => {
 
 export const onGrid = (item: number, grid: number) =>
   Math.round(item / grid) * grid
+
+export const isInArray = <T>(array: T[], item: T) => {
+  return array.some((thing) => thing === item)
+}

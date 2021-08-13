@@ -1,6 +1,9 @@
 import {
   faArrowsAlt,
+  faDoorOpen,
+  faEraser,
   faMousePointer,
+  faObjectGroup,
   faSearch,
   faSquareFull,
 } from '@fortawesome/free-solid-svg-icons'
@@ -13,16 +16,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import './theme.css'
 import './App.scss'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import {
-  blockIdsAtom,
-  canDragCanvasAtom,
-  selectedBlockIdAtom,
-  selectedToolAtom,
-  stageDimsAtom,
-} from 'State'
+import { canDragCanvasAtom, selectedToolAtom, stageDimsAtom } from 'State'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { handleZoom } from 'Helpers'
 import Konva from 'konva'
+import { useKeyboardShortcuts } from 'Hooks'
 
 function App() {
   const [isInMobile, setIsInMobile] = useState(false)
@@ -45,10 +43,7 @@ function App() {
   const handleSelectTool = (selection: string) => {
     setTool((prevTool) => (selection === prevTool ? 'pointer' : selection))
   }
-  const [canDragCanvas, setCanDragCanvas] = useRecoilState(canDragCanvasAtom)
-
-  const setBlockIds = useSetRecoilState(blockIdsAtom)
-  const selectedBlock = useRecoilValue(selectedBlockIdAtom)
+  const canDragCanvas = useRecoilValue(canDragCanvasAtom)
 
   const stageRef = useRef<Konva.Stage>(null)
   // future zoom stage will be needed as click to zoom is added
@@ -57,37 +52,7 @@ function App() {
     handleZoom(e, stageRef.current)
   }
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === 'Space') {
-        setCanDragCanvas(true)
-      }
-      if (e.code === 'Backspace') {
-        setBlockIds((prevBlocks) => {
-          return prevBlocks.filter((block) => {
-            return block !== selectedBlock
-          })
-        })
-      }
-      if (e.code === 'KeyU') {
-        handleSelectTool('shape')
-      }
-      if (e.code === 'KeyV') {
-        handleSelectTool('pointer')
-      }
-    }
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.code === 'Space') {
-        setCanDragCanvas(false)
-      }
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    window.addEventListener('keyup', handleKeyUp)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-      window.removeEventListener('keyup', handleKeyUp)
-    }
-  }, [])
+  useKeyboardShortcuts()
 
   return (
     <div
@@ -115,12 +80,17 @@ function App() {
               onClick={() => handleSelectTool('shape')}
               iconLeft={<FontAwesomeIcon icon={faSquareFull} />}
             />
+            <Button
+              kind={tool === 'door' ? 'default' : 'text'}
+              onClick={() => handleSelectTool('door')}
+              iconLeft={<FontAwesomeIcon icon={faEraser} />}
+            />
             <Spacer height="0.25rem" width="0.25rem" />
-            {/* <Button
-              kind={tool === 'zoom' ? 'default' : 'text'}
-              onClick={() => handleSelectTool('zoom')}
-              iconLeft={<FontAwesomeIcon icon={faSearch} />}
-            /> */}
+            <Button
+              kind={tool === 'select' ? 'default' : 'text'}
+              onClick={() => handleSelectTool('select')}
+              iconLeft={<FontAwesomeIcon icon={faObjectGroup} />}
+            />
           </FlexBox>
         }
       />
