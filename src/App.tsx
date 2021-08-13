@@ -6,10 +6,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useResizeObserver from '@react-hook/resize-observer'
-import { Button, GridBox } from 'component-library'
+import { Button, FlexBox, GridBox, Spacer } from 'component-library'
 import { CreativeStage } from 'Components/Canvas/CreativeStage/CreativeStage'
 import { Sidebar } from 'Components/UI'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './theme.css'
 import './App.scss'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
@@ -25,12 +25,21 @@ import { handleZoom } from 'Helpers'
 import Konva from 'konva'
 
 function App() {
+  const [isInMobile, setIsInMobile] = useState(false)
   const setStageDims = useSetRecoilState(stageDimsAtom)
   const stageContainerRef = useRef<HTMLDivElement>(null)
   // gets dimensions of stage
   useResizeObserver(stageContainerRef, (entry) =>
     setStageDims(entry.contentRect),
   )
+
+  useEffect(() => {
+    const handleBrowserResize = () => {
+      setIsInMobile(window.innerWidth <= 500)
+    }
+    window.addEventListener('resize', handleBrowserResize)
+    return () => window.removeEventListener('resize', handleBrowserResize)
+  }, [])
 
   const [tool, setTool] = useRecoilState(selectedToolAtom)
   const handleSelectTool = (selection: string) => {
@@ -88,28 +97,31 @@ function App() {
     >
       <Sidebar
         elements={
-          <GridBox gap="0.25rem">
+          <FlexBox flexDirection={isInMobile ? 'row' : 'column'}>
             <Button
               kind={tool === 'pointer' ? 'default' : 'text'}
               onClick={() => handleSelectTool('pointer')}
               iconLeft={<FontAwesomeIcon icon={faMousePointer} />}
             />
+            <Spacer height="0.25rem" width="0.25rem" />
             <Button
               kind={tool === 'grab' ? 'default' : 'text'}
               onClick={() => handleSelectTool('grab')}
               iconLeft={<FontAwesomeIcon icon={faArrowsAlt} />}
             />
+            <Spacer height="0.25rem" width="0.25rem" />
             <Button
               kind={tool === 'shape' ? 'default' : 'text'}
               onClick={() => handleSelectTool('shape')}
               iconLeft={<FontAwesomeIcon icon={faSquareFull} />}
             />
+            <Spacer height="0.25rem" width="0.25rem" />
             {/* <Button
               kind={tool === 'zoom' ? 'default' : 'text'}
               onClick={() => handleSelectTool('zoom')}
               iconLeft={<FontAwesomeIcon icon={faSearch} />}
             /> */}
-          </GridBox>
+          </FlexBox>
         }
       />
       <div ref={stageContainerRef} className="App__stage">

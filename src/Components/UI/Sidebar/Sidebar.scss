@@ -35,4 +35,12 @@
       right: 100%;
     }
   }
+  @media screen and (max-width: 500px) {
+    top: auto;
+    left: 0;
+    right: 0;
+    // &__bar {
+    //   flex-direction: row;
+    // }
+  }
 }
