@@ -3,7 +3,6 @@ import { Group, Image, Rect } from 'react-konva'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { selectedToolAtom, wallBlockIsVisibleAtom } from 'State'
 import useImage from 'use-image'
-import './WallPiece.scss'
 
 export const WallPiece: React.FC<{
   id: string
