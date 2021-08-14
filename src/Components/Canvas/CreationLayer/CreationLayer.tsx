@@ -15,6 +15,7 @@ import {
   insideLassoSelector,
   selectedToolAtom,
   selectedBlockIdsAtom,
+  wallOverlapSelector,
 } from 'State'
 import { v4 as uuid } from 'uuid'
 
@@ -33,6 +34,8 @@ export const CreationLayer = () => {
 
   const insideSelector = useRecoilValue(insideLassoSelector)
   const setSelected = useSetRecoilState(selectedBlockIdsAtom)
+
+  const wallOverlaps = useRecoilValue(wallOverlapSelector)
 
   const handleMouseDown = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
     setIsCreatingShape(true)
@@ -79,6 +82,9 @@ export const CreationLayer = () => {
     }
     if (tool === 'select') {
       setSelected(insideSelector)
+    }
+    if (tool === 'remove') {
+      console.log(wallOverlaps)
     }
   }
 

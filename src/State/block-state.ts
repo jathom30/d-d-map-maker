@@ -6,6 +6,7 @@ import {
   selectorFamily,
 } from 'recoil'
 import { DimensionsType, PositionType } from 'Types'
+import { gridSizeAtom } from './state'
 
 export const blockIdsAtom = atom<string[]>({
   key: 'blockIds',
@@ -121,5 +122,56 @@ export const insideLassoSelector = selector({
       if (posInside && dimsInside) return [...acc, blockId]
       return acc
     }, [])
+  },
+})
+
+export const wallOverlapSelector = selector({
+  key: 'wallOverlapSelector',
+  get: ({ get }) => {
+    const blockIds = get(blockIdsAtom)
+    const gridSize = get(gridSizeAtom)
+    const blockCoords = blockIds.reduce((allBlockPos: PositionType[], id) => {
+      const pos = get(blockPosAtom(id))
+      const dims = get(blockDimsAtom(id))
+      const xCoords = Array.from(
+        { length: dims.width / gridSize + 1 },
+        (_, i) => pos.x + i * gridSize,
+      )
+      const yCoords = Array.from(
+        { length: dims.height / gridSize + 1 },
+        (_, i) => pos.y + i * gridSize,
+      )
+      const xAxisCoords = (top: boolean) =>
+        xCoords.reduce(
+          (acc: PositionType[], xCoord) => [
+            ...acc,
+            { x: xCoord, y: pos.y + (top ? 0 : dims.height) },
+          ],
+          [],
+        )
+      const yAxisCoords = (left: boolean) =>
+        yCoords.reduce(
+          (acc: PositionType[], yCoord) => [
+            ...acc,
+            { x: pos.x + (left ? 0 : dims.width), y: yCoord },
+          ],
+          [],
+        )
+      // all sides with duplicates (corners) filtered
+      const thisBlockCoords = [
+        ...xAxisCoords(true),
+        ...yAxisCoords(true),
+        ...xAxisCoords(false),
+        ...yAxisCoords(false),
+      ].filter(
+        (v, i, a) => a.findIndex((t) => t.x === v.x && t.y === v.y) === i,
+      )
+      const allPositions = [...allBlockPos, ...thisBlockCoords]
+      // TODO: get only duplicate coords
+      return allPositions.filter(
+        (v, i, a) => a.findIndex((t) => t.x === v.x && t.y === v.y) !== i,
+      )
+    }, [])
+    return blockCoords
   },
 })

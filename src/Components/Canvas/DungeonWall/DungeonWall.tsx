@@ -19,20 +19,29 @@ export const DungeonWall: React.FC<{
   const offset = imageDims.height / 2
   const repeatWidth = Math.floor(width / imageDims.width) - 2
   const repeatHeight = Math.floor(height / imageDims.width) - 2
+  const xWallPositions = Array.from(
+    { length: repeatWidth },
+    (_, i) => imageDims.width * (i + 1),
+  )
+  const yWallPositions = Array.from(
+    { length: repeatHeight },
+    (_, i) => imageDims.width * (i + 1),
+  )
   switch (side) {
     case 'top':
       return (
-        <Group y={-offset}>
+        <Group y={-offset} listening={false}>
           <Image
             image={leftImg}
             width={imageDims.width + imageDims.width / 2}
             height={imageDims.height}
             x={-offset}
           />
-          {Array.from({ length: repeatWidth }, (_, index) => (
+          {xWallPositions.map((xPos) => (
             <Image
+              key={xPos}
               image={img}
-              x={imageDims.width * (index + 1)}
+              x={xPos}
               width={imageDims.width}
               height={imageDims.height}
             />
@@ -47,17 +56,18 @@ export const DungeonWall: React.FC<{
       )
     case 'bottom':
       return (
-        <Group rotation={180} x={width} y={height + offset}>
+        <Group rotation={180} x={width} y={height + offset} listening={false}>
           <Image
             image={leftImg}
             width={imageDims.width + imageDims.width / 2}
             height={imageDims.height}
             x={-offset}
           />
-          {Array.from({ length: repeatWidth }, (_, index) => (
+          {xWallPositions.map((xPos) => (
             <Image
+              key={xPos}
               image={img}
-              x={imageDims.width * (index + 1)}
+              x={xPos}
               width={imageDims.width}
               height={imageDims.height}
             />
@@ -72,17 +82,18 @@ export const DungeonWall: React.FC<{
       )
     case 'left':
       return (
-        <Group rotation={-90} y={height} x={-offset}>
+        <Group rotation={-90} y={height} x={-offset} listening={false}>
           <Image
             image={leftImg}
             width={imageDims.width + imageDims.width / 2}
             height={imageDims.height}
             x={-offset}
           />
-          {Array.from({ length: repeatHeight }, (_, index) => (
+          {yWallPositions.map((yPos) => (
             <Image
+              key={yPos}
               image={img}
-              x={imageDims.width * (index + 1)}
+              x={yPos}
               width={imageDims.width}
               height={imageDims.height}
             />
@@ -97,17 +108,18 @@ export const DungeonWall: React.FC<{
       )
     case 'right':
       return (
-        <Group rotation={90} x={width + offset}>
+        <Group rotation={90} x={width + offset} listening={false}>
           <Image
             image={leftImg}
             width={imageDims.width + imageDims.width / 2}
             height={imageDims.height}
             x={-offset}
           />
-          {Array.from({ length: repeatHeight }, (_, index) => (
+          {yWallPositions.map((yPos) => (
             <Image
+              key={yPos}
               image={img}
-              x={imageDims.width * (index + 1)}
+              x={yPos}
               width={imageDims.width}
               height={imageDims.height}
             />

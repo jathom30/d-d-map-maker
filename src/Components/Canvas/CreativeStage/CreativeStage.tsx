@@ -57,7 +57,6 @@ export const CreativeStage: React.FC<{
             dragBoundFunc={(pos) => handleCoverDrag(pos, groupRef.current)}
           >
             <GridLayer />
-            {(tool === 'shape' || tool === 'select') && <CreationLayer />}
             {blockIds
               .filter(
                 (blockId) =>
@@ -68,6 +67,9 @@ export const CreativeStage: React.FC<{
               .map((blockId) => (
                 <Block key={blockId} id={blockId} />
               ))}
+            {(tool === 'shape' || tool === 'select' || tool === 'remove') && (
+              <CreationLayer />
+            )}
             {!!selectedBlocks.length && <CustomTransformer />}
             {/* below rect used as grab handle for parent group */}
             {canDrag && (

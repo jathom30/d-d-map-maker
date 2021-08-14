@@ -1,15 +1,13 @@
 import {
   faArrowsAlt,
-  faDoorOpen,
   faEraser,
   faMousePointer,
   faObjectGroup,
-  faSearch,
   faSquareFull,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useResizeObserver from '@react-hook/resize-observer'
-import { Button, FlexBox, GridBox, Spacer } from 'component-library'
+import { Button, FlexBox, Spacer } from 'component-library'
 import { CreativeStage } from 'Components/Canvas/CreativeStage/CreativeStage'
 import { Sidebar } from 'Components/UI'
 import React, { useEffect, useRef, useState } from 'react'
@@ -81,8 +79,8 @@ function App() {
               iconLeft={<FontAwesomeIcon icon={faSquareFull} />}
             />
             <Button
-              kind={tool === 'door' ? 'default' : 'text'}
-              onClick={() => handleSelectTool('door')}
+              kind={tool === 'remove' ? 'default' : 'text'}
+              onClick={() => handleSelectTool('remove')}
               iconLeft={<FontAwesomeIcon icon={faEraser} />}
             />
             <Spacer height="0.25rem" width="0.25rem" />
