@@ -4,8 +4,6 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { selectedToolAtom, wallBlockIsVisibleAtom } from 'State'
 import useImage from 'use-image'
 
-interface VerticalPiece {}
-
 type WallCornerPieceType = {
   id: string
   image: string
@@ -54,6 +52,7 @@ export const WallCornerPiece: React.FC<WallCornerPieceType> = ({
           fill={isVisible ? 'red' : 'blue'}
           opacity={0.35}
           onClick={() => setIsVisible(!isVisible)}
+          onTap={() => setIsVisible(!isVisible)}
         />
       )}
     </Group>

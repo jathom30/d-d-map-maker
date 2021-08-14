@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Group, Image, Rect } from 'react-konva'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { selectedToolAtom, wallBlockIsVisibleAtom } from 'State'
@@ -34,6 +34,7 @@ export const WallPiece: React.FC<{
           fill={isVisible ? 'red' : 'blue'}
           opacity={0.35}
           onClick={() => setIsVisible(!isVisible)}
+          onTap={() => setIsVisible(!isVisible)}
         />
       )}
     </Group>

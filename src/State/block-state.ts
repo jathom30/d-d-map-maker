@@ -218,7 +218,3 @@ export const wallBlockIsVisibleAtom = atomFamily({
   key: 'wallBlockIsVisible',
   default: true,
 })
-
-// get overlapped coords
-// if in erase mode, those blocks highlight red
-// on click they are removed
