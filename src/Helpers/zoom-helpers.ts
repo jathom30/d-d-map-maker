@@ -37,3 +37,14 @@ export const handleZoom = (e: KonvaEventObject<WheelEvent>, stage: Stage) => {
 
   return basicZoom(stage, 1.01, pointer, zoomingIn)
 }
+
+// ----------------------- multi touch helpers
+export const getDistance = (p1: PositionType, p2: PositionType) =>
+  Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2)
+
+export const getCenter = (p1: PositionType, p2: PositionType) => ({
+  x: (p1.x + p2.x) / 2,
+  y: (p1.y + p2.y) / 2,
+})
+
+// TODO pinch zoom: https://konvajs.org/docs/sandbox/Multi-touch_Scale_Stage.html

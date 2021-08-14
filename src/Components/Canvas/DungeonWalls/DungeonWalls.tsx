@@ -1,8 +1,7 @@
 import React from 'react'
 import horizontal from 'Assets/horizontal_wall.png'
 import vertical from 'Assets/vertical_wall.png'
-import leftAngle from 'Assets/left_wall.png'
-import rightAngle from 'Assets/right_wall.png'
+import corner from 'Assets/corner_wall.png'
 import { useRecoilValue } from 'recoil'
 import { blockDimsAtom, gridSizeAtom } from 'State'
 import { WallCornerPiece } from 'Components/WallCornerPiece'
@@ -46,7 +45,7 @@ export const DungeonWalls: React.FC<{
     <>
       <WallCornerPiece
         id={`${id}_top-left-horz`}
-        image={leftAngle}
+        image={corner}
         orientation="horizontal"
         xAxis="left"
         yAxis="top"
@@ -55,7 +54,7 @@ export const DungeonWalls: React.FC<{
       />
       <WallCornerPiece
         id={`${id}_top-left-vert`}
-        image={rightAngle}
+        image={corner}
         orientation="vertical"
         xAxis="left"
         yAxis="top"
@@ -65,7 +64,7 @@ export const DungeonWalls: React.FC<{
 
       <WallCornerPiece
         id={`${id}_top-right-horz`}
-        image={rightAngle}
+        image={corner}
         orientation="horizontal"
         xAxis="right"
         yAxis="top"
@@ -74,7 +73,7 @@ export const DungeonWalls: React.FC<{
       />
       <WallCornerPiece
         id={`${id}_top-right-vert`}
-        image={rightAngle}
+        image={corner}
         orientation="vertical"
         xAxis="right"
         yAxis="top"
@@ -84,7 +83,7 @@ export const DungeonWalls: React.FC<{
 
       <WallCornerPiece
         id={`${id}_bottom-left-horz`}
-        image={leftAngle}
+        image={corner}
         orientation="horizontal"
         xAxis="left"
         yAxis="bottom"
@@ -93,7 +92,7 @@ export const DungeonWalls: React.FC<{
       />
       <WallCornerPiece
         id={`${id}_bottom-left-vert`}
-        image={rightAngle}
+        image={corner}
         orientation="vertical"
         xAxis="left"
         yAxis="bottom"
@@ -103,7 +102,7 @@ export const DungeonWalls: React.FC<{
 
       <WallCornerPiece
         id={`${id}_bottom-right-horz`}
-        image={rightAngle}
+        image={corner}
         orientation="horizontal"
         xAxis="right"
         yAxis="bottom"
@@ -112,7 +111,7 @@ export const DungeonWalls: React.FC<{
       />
       <WallCornerPiece
         id={`${id}_bottom-right-vert`}
-        image={rightAngle}
+        image={corner}
         orientation="vertical"
         xAxis="right"
         yAxis="bottom"

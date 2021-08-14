@@ -72,7 +72,7 @@ export const Block: React.FC<{ id: string }> = ({ id }) => {
       <Rect
         width={width}
         height={height}
-        fill="lightgreen"
+        fill="darkgrey"
         listening={!isCreatingShape}
         onClick={handleClick}
         onTap={handleClick}
