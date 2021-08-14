@@ -35,12 +35,9 @@
       right: 100%;
     }
   }
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 500px) and (-webkit-min-device-pixel-ratio: 2) {
     top: auto;
     left: 0;
     right: 0;
-    // &__bar {
-    //   flex-direction: row;
-    // }
   }
 }
