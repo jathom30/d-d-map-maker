@@ -6,6 +6,7 @@ import {
   selectorFamily,
 } from 'recoil'
 import { DimensionsType, PositionType } from 'Types'
+import { flattenDiagnosticMessageText } from 'typescript'
 import { gridSizeAtom } from './state'
 
 export const blockIdsAtom = atom<string[]>({
@@ -166,12 +167,58 @@ export const wallOverlapSelector = selector({
       ].filter(
         (v, i, a) => a.findIndex((t) => t.x === v.x && t.y === v.y) === i,
       )
-      const allPositions = [...allBlockPos, ...thisBlockCoords]
-      // TODO: get only duplicate coords
-      return allPositions.filter(
-        (v, i, a) => a.findIndex((t) => t.x === v.x && t.y === v.y) !== i,
-      )
+      return [...allBlockPos, ...thisBlockCoords]
     }, [])
-    return blockCoords
+    return blockCoords.filter(
+      (v, i, a) => a.findIndex((t) => t.x === v.x && t.y === v.y) !== i,
+    )
   },
 })
+
+export const blockCornerPositionsSelector = selectorFamily({
+  key: 'blockCornerPositionsSelector',
+  get:
+    (id) =>
+    ({ get }) => {
+      const pos = get(blockPosAtom(id))
+      const dims = get(blockDimsAtom(id))
+      const gridSize = get(gridSizeAtom)
+      const topLeft = pos
+      const topRight = {
+        x: pos.x + dims.width - gridSize,
+        y: pos.y,
+      }
+      const bottomLeft = {
+        x: pos.x,
+        y: pos.y + dims.height - gridSize,
+      }
+      const bottomRight = {
+        x: pos.x + dims.width - gridSize,
+        y: pos.y + dims.height - gridSize,
+      }
+      return [topLeft, bottomLeft, topRight, bottomRight]
+    },
+})
+
+export const allBlockCornerCoordsSelector = selector({
+  key: 'allBlockCornerCoordsSelector',
+  get: ({ get }) => {
+    const ids = get(blockIdsAtom)
+    return ids.reduce(
+      (coords: PositionType[], id) => [
+        ...coords,
+        ...get(blockCornerPositionsSelector(id)),
+      ],
+      [],
+    )
+  },
+})
+
+export const wallBlockIsVisibleAtom = atomFamily({
+  key: 'wallBlockIsVisible',
+  default: true,
+})
+
+// get overlapped coords
+// if in erase mode, those blocks highlight red
+// on click they are removed

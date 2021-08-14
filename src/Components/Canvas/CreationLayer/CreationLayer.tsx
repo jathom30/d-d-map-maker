@@ -84,7 +84,7 @@ export const CreationLayer = () => {
       setSelected(insideSelector)
     }
     if (tool === 'remove') {
-      console.log(wallOverlaps)
+      console.log('erased')
     }
   }
 

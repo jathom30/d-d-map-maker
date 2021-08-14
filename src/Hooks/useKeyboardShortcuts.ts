@@ -38,8 +38,11 @@ export const useKeyboardShortcuts = () => {
       if (e.code === 'KeyV') {
         handleSelectTool('pointer')
       }
-      if (e.code === 'KeyM') {
+      if (e.code === 'KeyL') {
         handleSelectTool('select')
+      }
+      if (e.code === 'KeyE') {
+        handleSelectTool('remove')
       }
     }
     const handleKeyUp = (e: KeyboardEvent) => {

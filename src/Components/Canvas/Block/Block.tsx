@@ -14,7 +14,7 @@ import {
   isSelectedSelector,
   selectedBlockIdsAtom,
 } from 'State'
-import { DungeonWall } from '../DungeonWall'
+import { DungeonWalls } from '../DungeonWalls'
 
 export const Block: React.FC<{ id: string }> = ({ id }) => {
   const [{ width, height }, setDims] = useRecoilState(blockDimsAtom(id))
@@ -79,10 +79,7 @@ export const Block: React.FC<{ id: string }> = ({ id }) => {
         stroke="orange"
         strokeWidth={isSelected ? 1 : 0}
       />
-      <DungeonWall id={id} side="top" />
-      <DungeonWall id={id} side="bottom" />
-      <DungeonWall id={id} side="left" />
-      <DungeonWall id={id} side="right" />
+      <DungeonWalls id={id} />
     </Group>
   )
 }

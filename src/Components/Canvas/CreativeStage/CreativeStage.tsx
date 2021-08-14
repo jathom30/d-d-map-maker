@@ -67,9 +67,7 @@ export const CreativeStage: React.FC<{
               .map((blockId) => (
                 <Block key={blockId} id={blockId} />
               ))}
-            {(tool === 'shape' || tool === 'select' || tool === 'remove') && (
-              <CreationLayer />
-            )}
+            {(tool === 'shape' || tool === 'select') && <CreationLayer />}
             {!!selectedBlocks.length && <CustomTransformer />}
             {/* below rect used as grab handle for parent group */}
             {canDrag && (
