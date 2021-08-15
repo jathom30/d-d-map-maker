@@ -3,7 +3,12 @@ import horizontal from 'Assets/horizontal_wall.png'
 import vertical from 'Assets/vertical_wall.png'
 import corner from 'Assets/corner_wall.png'
 import { useRecoilValue } from 'recoil'
-import { blockDimsAtom, gridSizeAtom } from 'State'
+import {
+  blockDimsAtom,
+  blockIsDraggingAtom,
+  blockPosAtom,
+  gridSizeAtom,
+} from 'State'
 import { WallCornerPiece } from 'Components/WallCornerPiece'
 import { WallPiece } from '../WallPiece'
 
@@ -11,8 +16,9 @@ export const DungeonWalls: React.FC<{
   id: string
 }> = ({ id }) => {
   const { width, height } = useRecoilValue(blockDimsAtom(id))
+  const { x, y } = useRecoilValue(blockPosAtom(id))
+  const blockIsDragging = useRecoilValue(blockIsDraggingAtom(id))
   const gridSize = useRecoilValue(gridSizeAtom)
-  // const parentBlockPos = useRecoilValue(blockPosAtom(id))
   const offset = gridSize / 4
   const repeatWidth = width / gridSize
   const repeatHeight = height / gridSize
@@ -20,27 +26,20 @@ export const DungeonWalls: React.FC<{
     Array.from({ length: repeatWidth - 2 }, (_, i) => ({
       id: `${id}_${top ? 'top' : 'bottom'}_${i}`,
       pos: {
-        x: gridSize * (i + 1),
-        y: top ? 0 : height,
+        x: x + gridSize * (i + 1),
+        y: y + (top ? 0 : height),
       },
-      // parentPos: {
-      //   x: parentBlockPos.x + gridSize * i,
-      //   y: parentBlockPos.y + (top ? 0 : height),
-      // },
     }))
   const verticalWallPos = (left: boolean) =>
     Array.from({ length: repeatHeight - 2 }, (_, i) => ({
       id: `${id}_${left ? 'left' : 'right'}_${i}`,
       pos: {
-        x: left ? 0 : width,
-        y: gridSize * (i + 1),
+        x: x + (left ? 0 : width),
+        y: y + gridSize * (i + 1),
       },
-      // parentPos: {
-      //   x: parentBlockPos.x + (left ? 0 : width),
-      //   y: parentBlockPos.y + gridSize * i,
-      // },
     }))
 
+  if (blockIsDragging) return null
   return (
     <>
       <WallCornerPiece
@@ -49,8 +48,8 @@ export const DungeonWalls: React.FC<{
         orientation="horizontal"
         xAxis="left"
         yAxis="top"
-        x={-offset}
-        y={-offset}
+        x={x - offset}
+        y={y - offset}
       />
       <WallCornerPiece
         id={`${id}_top-left-vert`}
@@ -58,8 +57,8 @@ export const DungeonWalls: React.FC<{
         orientation="vertical"
         xAxis="left"
         yAxis="top"
-        x={offset}
-        y={gridSize}
+        x={x + offset}
+        y={y + gridSize}
       />
 
       <WallCornerPiece
@@ -68,8 +67,8 @@ export const DungeonWalls: React.FC<{
         orientation="horizontal"
         xAxis="right"
         yAxis="top"
-        x={width - gridSize}
-        y={-offset}
+        x={x + width - gridSize}
+        y={y - offset}
       />
       <WallCornerPiece
         id={`${id}_top-right-vert`}
@@ -77,8 +76,8 @@ export const DungeonWalls: React.FC<{
         orientation="vertical"
         xAxis="right"
         yAxis="top"
-        x={width - offset}
-        y={gridSize}
+        x={x + width - offset}
+        y={y + gridSize}
       />
 
       <WallCornerPiece
@@ -87,8 +86,8 @@ export const DungeonWalls: React.FC<{
         orientation="horizontal"
         xAxis="left"
         yAxis="bottom"
-        x={-offset}
-        y={height - gridSize + offset}
+        x={x - offset}
+        y={y + height - gridSize + offset}
       />
       <WallCornerPiece
         id={`${id}_bottom-left-vert`}
@@ -96,8 +95,8 @@ export const DungeonWalls: React.FC<{
         orientation="vertical"
         xAxis="left"
         yAxis="bottom"
-        x={offset}
-        y={height - gridSize}
+        x={x + offset}
+        y={y + height - gridSize}
       />
 
       <WallCornerPiece
@@ -106,8 +105,8 @@ export const DungeonWalls: React.FC<{
         orientation="horizontal"
         xAxis="right"
         yAxis="bottom"
-        x={width - gridSize}
-        y={height - gridSize + offset}
+        x={x + width - gridSize}
+        y={y + height - gridSize + offset}
       />
       <WallCornerPiece
         id={`${id}_bottom-right-vert`}
@@ -115,8 +114,8 @@ export const DungeonWalls: React.FC<{
         orientation="vertical"
         xAxis="right"
         yAxis="bottom"
-        x={width - offset}
-        y={height - gridSize}
+        x={x + width - offset}
+        y={y + height - gridSize}
       />
 
       {horizontalWallPos(true).map((coords) => (

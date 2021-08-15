@@ -218,3 +218,8 @@ export const wallBlockIsVisibleAtom = atomFamily({
   key: 'wallBlockIsVisible',
   default: true,
 })
+
+export const blockIsDraggingAtom = atomFamily({
+  key: 'blockIsDragging',
+  default: false,
+})

@@ -5,6 +5,7 @@ import { Group, Rect } from 'react-konva'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   blockDimsAtom,
+  blockIsDraggingAtom,
   blockPosAtom,
   canvasDimsSelector,
   creationDimsAtom,
@@ -14,12 +15,12 @@ import {
   isSelectedSelector,
   selectedBlockIdsAtom,
 } from 'State'
-import { DungeonWalls } from '../DungeonWalls'
 
 export const Block: React.FC<{ id: string }> = ({ id }) => {
   const [{ width, height }, setDims] = useRecoilState(blockDimsAtom(id))
   const [{ x, y }, setPos] = useRecoilState(blockPosAtom(id))
   const isCreatingShape = useRecoilValue(isCreatingShapeAtom)
+  const setBlockIsDragging = useSetRecoilState(blockIsDraggingAtom(id))
 
   const gridSize = useRecoilValue(gridSizeAtom)
   const canvasDims = useRecoilValue(canvasDimsSelector)
@@ -65,8 +66,12 @@ export const Block: React.FC<{ id: string }> = ({ id }) => {
     <Group
       x={x}
       y={y}
+      onDragStart={() => setBlockIsDragging(true)}
+      onTouchStart={() => setBlockIsDragging(true)}
       onTouchMove={handleMove}
       onDragMove={handleMove}
+      onDragEnd={() => setBlockIsDragging(false)}
+      onTouchEnd={() => setBlockIsDragging(false)}
       draggable
     >
       <Rect
@@ -79,7 +84,6 @@ export const Block: React.FC<{ id: string }> = ({ id }) => {
         stroke="orange"
         strokeWidth={isSelected ? 1 : 0}
       />
-      <DungeonWalls id={id} />
     </Group>
   )
 }

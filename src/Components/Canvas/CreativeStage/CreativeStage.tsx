@@ -2,7 +2,7 @@ import { getCenterPos, handleCoverDrag } from 'Helpers'
 import Konva from 'konva'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { Stage as StageType } from 'konva/lib/Stage'
-import React, { useRef } from 'react'
+import React, { Fragment, useRef } from 'react'
 import { Layer, Stage, Rect, Group } from 'react-konva'
 import {
   useRecoilBridgeAcrossReactRoots_UNSTABLE,
@@ -19,6 +19,7 @@ import {
 import { Block } from '../Block'
 import { CreationLayer } from '../CreationLayer'
 import { CustomTransformer } from '../CustomTransformer'
+import { DungeonWalls } from '../DungeonWalls'
 import { GridLayer } from '../GridLayer'
 
 export const CreativeStage: React.FC<{
@@ -65,7 +66,10 @@ export const CreativeStage: React.FC<{
                   ),
               )
               .map((blockId) => (
-                <Block key={blockId} id={blockId} />
+                <Fragment key="blockId">
+                  <Block id={blockId} />
+                  <DungeonWalls id={blockId} />
+                </Fragment>
               ))}
             {(tool === 'shape' || tool === 'select') && <CreationLayer />}
             {!!selectedBlocks.length && <CustomTransformer />}
