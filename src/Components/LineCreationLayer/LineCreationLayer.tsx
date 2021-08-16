@@ -1,4 +1,4 @@
-import { fixPointToGrid, onSameCoord } from 'Helpers'
+import { fixPointToGrid, onGrid, onSameCoord } from 'Helpers'
 import { KonvaEventObject } from 'konva/lib/Node'
 import React, { useState } from 'react'
 import { Group, Line, Rect } from 'react-konva'
@@ -35,6 +35,21 @@ export const LineCreationLayer = () => {
     setCurrentLine((prevLine) => [...prevLine, pos])
   }
 
+  const handlePointMove = (e: KonvaEventObject<DragEvent>, index: number) => {
+    console.log('dragging', index)
+    const posOnGrid = fixPointToGrid(e.target.position(), gridSize)
+    const posOffset = {
+      x: posOnGrid.x - gridSize / 4,
+      y: posOnGrid.y - gridSize / 4,
+    }
+    e.target.position(posOffset)
+    setCurrentLine((prevPoints) => {
+      const newPoints = [...prevPoints]
+      newPoints[index] = posOnGrid
+      return newPoints
+    })
+  }
+
   const points = currentLine.map((coord) => [coord.x, coord.y]).flat()
 
   return (
@@ -47,6 +62,19 @@ export const LineCreationLayer = () => {
         closed={!isCreating}
         fill="orange"
       />
+      {currentLine.map((coord, i) => (
+        <Rect
+          key={i}
+          x={coord.x - gridSize / 4}
+          y={coord.y - gridSize / 4}
+          stroke="red"
+          fill="white"
+          width={gridSize / 2}
+          height={gridSize / 2}
+          onDragMove={(e) => handlePointMove(e, i)}
+          draggable
+        />
+      ))}
     </Group>
   )
 }
