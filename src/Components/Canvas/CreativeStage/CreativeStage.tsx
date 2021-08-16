@@ -4,7 +4,7 @@ import Konva from 'konva'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { Stage as StageType } from 'konva/lib/Stage'
 import React, { Fragment, useRef } from 'react'
-import { Layer, Stage, Rect, Group, RegularPolygon, Line } from 'react-konva'
+import { Layer, Stage, Rect, Group } from 'react-konva'
 import {
   useRecoilBridgeAcrossReactRoots_UNSTABLE,
   useRecoilValue,
@@ -92,12 +92,6 @@ export const CreativeStage: React.FC<{
               <Rect height={canvasDims.height} width={canvasDims.width} />
             )}
           </Group>
-          <Line
-            points={[0, 0, 50, 50, 0, 100]}
-            stroke="red"
-            fill="orange"
-            closed
-          />
         </Layer>
       </RecoilBridge>
     </Stage>

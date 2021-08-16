@@ -1,4 +1,4 @@
-import { fixPointToGrid, onGrid, onSameCoord } from 'Helpers'
+import { fixPointToGrid, onSameCoord } from 'Helpers'
 import { KonvaEventObject } from 'konva/lib/Node'
 import React, { useState } from 'react'
 import { Group, Line, Rect } from 'react-konva'
@@ -18,25 +18,46 @@ export const LineCreationLayer = () => {
   const [currentLine, setCurrentLine] = useState<PositionType[]>([])
   const setLineIds = useSetRecoilState(lineIdsAtom)
   const [isCreating, setIsCreating] = useState(false)
+  const [isMouseDown, setIsMouseDown] = useState(false)
   const setCreationPoints = useSetRecoilState(creationPointsAtom)
 
-  const handleClick = (e: KonvaEventObject<MouseEvent>) => {
+  const handleMouseDown = (e: KonvaEventObject<MouseEvent>) => {
     setIsCreating(true)
+    setIsMouseDown(true)
     const pos = fixPointToGrid(
       e.currentTarget.getRelativePointerPosition(),
       gridSize,
     )
-    if (currentLine.some((point) => onSameCoord(point, pos))) {
-      setIsCreating(false)
-      setLineIds((prevIds) => [...prevIds, uuid()])
-      setCreationPoints(currentLine.map((coord) => [coord.x, coord.y]).flat())
-      return
-    }
     setCurrentLine((prevLine) => [...prevLine, pos])
   }
 
+  const handleMouseMove = (e: KonvaEventObject<MouseEvent>) => {
+    if (!isMouseDown) return
+    const pos = fixPointToGrid(
+      e.currentTarget.getRelativePointerPosition(),
+      gridSize,
+    )
+    setCurrentLine((prevLine) => {
+      const newLine = [...prevLine]
+      newLine[newLine.length - 1] = pos
+      return newLine
+    })
+  }
+
+  const handleMouseUp = (e: KonvaEventObject<MouseEvent>) => {
+    setIsMouseDown(false)
+    const pos = fixPointToGrid(
+      e.currentTarget.getRelativePointerPosition(),
+      gridSize,
+    )
+    if (onSameCoord(currentLine[0], pos)) {
+      setIsCreating(false)
+      setLineIds((prevIds) => [...prevIds, uuid()])
+      setCreationPoints(currentLine.map((coord) => [coord.x, coord.y]).flat())
+    }
+  }
+
   const handlePointMove = (e: KonvaEventObject<DragEvent>, index: number) => {
-    console.log('dragging', index)
     const posOnGrid = fixPointToGrid(e.target.position(), gridSize)
     const posOffset = {
       x: posOnGrid.x - gridSize / 4,
@@ -53,7 +74,11 @@ export const LineCreationLayer = () => {
   const points = currentLine.map((coord) => [coord.x, coord.y]).flat()
 
   return (
-    <Group onClick={handleClick}>
+    <Group
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+    >
       <Rect width={canvasDims.width} height={canvasDims.height} />
       <Line
         points={points}

@@ -1,6 +1,7 @@
 import {
   faArrowsAlt,
   faEraser,
+  faHandPointer,
   faMousePointer,
   faObjectGroup,
   faPenFancy,
@@ -78,6 +79,11 @@ function App() {
               kind={tool === 'pointer' ? 'default' : 'text'}
               onClick={() => handleSelectTool('pointer')}
               iconLeft={<FontAwesomeIcon icon={faMousePointer} />}
+            />
+            <Button
+              kind={tool === 'edit-points' ? 'default' : 'text'}
+              onClick={() => handleSelectTool('edit-points')}
+              iconLeft={<FontAwesomeIcon icon={faHandPointer} />}
             />
             <Spacer height="0.25rem" width="0.25rem" />
             <Button
