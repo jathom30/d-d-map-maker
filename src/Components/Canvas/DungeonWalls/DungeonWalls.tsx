@@ -9,7 +9,7 @@ import {
   blockPosAtom,
   gridSizeAtom,
 } from 'State'
-import { WallCornerPiece } from 'Components/WallCornerPiece'
+import { WallCornerPiece } from '../WallCornerPiece'
 import { WallPiece } from '../WallPiece'
 
 export const DungeonWalls: React.FC<{

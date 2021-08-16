@@ -1,4 +1,8 @@
-import { getCreateOnDragDims, getCreateOnDragPos } from 'Helpers'
+import {
+  fixPointToGrid,
+  getCreateOnDragDims,
+  getCreateOnDragPos,
+} from 'Helpers'
 import { KonvaEventObject } from 'konva/lib/Node'
 import React, { useState } from 'react'
 import { Group, Rect } from 'react-konva'
@@ -15,7 +19,6 @@ import {
   insideLassoSelector,
   selectedToolAtom,
   selectedBlockIdsAtom,
-  wallOverlapSelector,
 } from 'State'
 import { v4 as uuid } from 'uuid'
 
@@ -35,15 +38,10 @@ export const CreationLayer = () => {
   const insideSelector = useRecoilValue(insideLassoSelector)
   const setSelected = useSetRecoilState(selectedBlockIdsAtom)
 
-  const wallOverlaps = useRecoilValue(wallOverlapSelector)
-
   const handleMouseDown = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
     setIsCreatingShape(true)
     const pos = e.currentTarget.getRelativePointerPosition()
-    setClickStartPos({
-      x: Math.round(pos.x / gridSize) * gridSize,
-      y: Math.round(pos.y / gridSize) * gridSize,
-    })
+    setClickStartPos(fixPointToGrid(pos, gridSize))
   }
 
   const handleMouseMove = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {

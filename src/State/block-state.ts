@@ -6,7 +6,6 @@ import {
   selectorFamily,
 } from 'recoil'
 import { DimensionsType, PositionType } from 'Types'
-import { flattenDiagnosticMessageText } from 'typescript'
 import { gridSizeAtom } from './state'
 
 export const blockIdsAtom = atom<string[]>({

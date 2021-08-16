@@ -3,7 +3,9 @@ import {
   faEraser,
   faMousePointer,
   faObjectGroup,
+  faPenFancy,
   faSquareFull,
+  faUserPlus,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useResizeObserver from '@react-hook/resize-observer'
@@ -14,14 +16,21 @@ import React, { useEffect, useRef, useState } from 'react'
 import './theme.css'
 import './App.scss'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { canDragCanvasAtom, selectedToolAtom, stageDimsAtom } from 'State'
+import {
+  canDragCanvasAtom,
+  playerIdsAtom,
+  selectedToolAtom,
+  stageDimsAtom,
+} from 'State'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { handleZoom } from 'Helpers'
 import Konva from 'konva'
 import { useKeyboardShortcuts } from 'Hooks'
+import { v4 as uuid } from 'uuid'
 
 function App() {
   const [isInMobile, setIsInMobile] = useState(false)
+  const setPlayerIds = useSetRecoilState(playerIdsAtom)
   const setStageDims = useSetRecoilState(stageDimsAtom)
   const stageContainerRef = useRef<HTMLDivElement>(null)
   // gets dimensions of stage
@@ -51,6 +60,10 @@ function App() {
   }
 
   useKeyboardShortcuts()
+
+  const handleAddPlayerToken = () => {
+    setPlayerIds((prevIds) => [...prevIds, uuid()])
+  }
 
   return (
     <div
@@ -88,6 +101,19 @@ function App() {
               kind={tool === 'select' ? 'default' : 'text'}
               onClick={() => handleSelectTool('select')}
               iconLeft={<FontAwesomeIcon icon={faObjectGroup} />}
+            />
+            <Button
+              kind={tool === 'line' ? 'default' : 'text'}
+              onClick={() => handleSelectTool('line')}
+              iconLeft={<FontAwesomeIcon icon={faPenFancy} />}
+            />
+          </FlexBox>
+        }
+        footer={
+          <FlexBox flexDirection={isInMobile ? 'row' : 'column'}>
+            <Button
+              iconLeft={<FontAwesomeIcon icon={faUserPlus} />}
+              onClick={handleAddPlayerToken}
             />
           </FlexBox>
         }
