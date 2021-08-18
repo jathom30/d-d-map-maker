@@ -44,6 +44,9 @@ export const useKeyboardShortcuts = () => {
       if (e.code === 'KeyE') {
         handleSelectTool('remove')
       }
+      if (e.code === 'KeyP') {
+        handleSelectTool('pen')
+      }
     }
     const handleKeyUp = (e: KeyboardEvent) => {
       if (e.code === 'Space') {

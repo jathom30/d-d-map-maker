@@ -6,13 +6,16 @@ import { useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   canvasDimsSelector,
   creationPointsAtom,
+  creationPosAtom,
   gridSizeAtom,
   lineIdsAtom,
+  selectedToolAtom,
 } from 'State'
 import { PositionType } from 'Types'
 import { v4 as uuid } from 'uuid'
 
 export const LineCreationLayer = () => {
+  const setTool = useSetRecoilState(selectedToolAtom)
   const canvasDims = useRecoilValue(canvasDimsSelector)
   const gridSize = useRecoilValue(gridSizeAtom)
   const [currentLine, setCurrentLine] = useState<PositionType[]>([])
@@ -20,6 +23,7 @@ export const LineCreationLayer = () => {
   const [isCreating, setIsCreating] = useState(false)
   const [isMouseDown, setIsMouseDown] = useState(false)
   const setCreationPoints = useSetRecoilState(creationPointsAtom)
+  const setCreationPos = useSetRecoilState(creationPosAtom)
 
   const handleMouseDown = (e: KonvaEventObject<MouseEvent>) => {
     setIsCreating(true)
@@ -50,10 +54,12 @@ export const LineCreationLayer = () => {
       e.currentTarget.getRelativePointerPosition(),
       gridSize,
     )
-    if (onSameCoord(currentLine[0], pos)) {
+    if (onSameCoord(currentLine[0], pos) && currentLine.length > 1) {
       setIsCreating(false)
       setLineIds((prevIds) => [...prevIds, uuid()])
       setCreationPoints(currentLine.map((coord) => [coord.x, coord.y]).flat())
+      setTool('pointer')
+      setCreationPos(currentLine[0])
     }
   }
 

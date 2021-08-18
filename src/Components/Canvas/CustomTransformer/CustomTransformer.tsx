@@ -10,11 +10,9 @@ import {
   selectedBlockIdsAtom,
   selectedPosSelector,
 } from 'State'
-import './CustomTransformer.scss'
 import { SelectedBlock } from '../SelectedBlock'
 
 export const CustomTransformer = () => {
-  // const tempId = ''
   const selectedIds = useRecoilValue(selectedBlockIdsAtom)
   const [{ x, y, width, height }, setPos] = useRecoilState(selectedPosSelector)
   const setDims = useSetRecoilState(blockDimsAtom(selectedIds[0]))

@@ -16,6 +16,7 @@ import {
   lineIdsAtom,
   playerIdsAtom,
   selectedBlockIdsAtom,
+  selectedLineIdsAtom,
   selectedToolAtom,
   stageDimsAtom,
 } from 'State'
@@ -24,6 +25,7 @@ import { CreationLayer } from '../CreationLayer'
 import { CustomTransformer } from '../CustomTransformer'
 import { DungeonWalls } from '../DungeonWalls'
 import { GridLayer } from '../GridLayer'
+import { LineTransformer } from '../LineTransformer'
 import { MapShape } from '../MapShape'
 import { PlayerToken } from '../PlayerToken'
 
@@ -40,6 +42,7 @@ export const CreativeStage: React.FC<{
   const playerIds = useRecoilValue(playerIdsAtom)
 
   const selectedBlocks = useRecoilValue(selectedBlockIdsAtom)
+  const selectedLines = useRecoilValue(selectedLineIdsAtom)
 
   const tool = useRecoilValue(selectedToolAtom)
   const canDragCanvas = useRecoilValue(canDragCanvasAtom)
@@ -78,12 +81,20 @@ export const CreativeStage: React.FC<{
                   <DungeonWalls id={blockId} />
                 </Fragment>
               ))}
-            {lineIds.map((id) => (
-              <MapShape id={id} />
-            ))}
+            {lineIds
+              .filter(
+                (lineId) =>
+                  !selectedLines.some(
+                    (selectedLine) => selectedLine === lineId,
+                  ),
+              )
+              .map((id) => (
+                <MapShape id={id} />
+              ))}
             {(tool === 'shape' || tool === 'select') && <CreationLayer />}
-            {tool === 'line' && <LineCreationLayer />}
+            {tool === 'pen' && <LineCreationLayer />}
             {!!selectedBlocks.length && <CustomTransformer />}
+            {!!selectedLines.length && <LineTransformer />}
             {playerIds.map((id) => (
               <PlayerToken key={id} id={id} />
             ))}
